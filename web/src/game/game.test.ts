@@ -22,7 +22,7 @@ describe("tap: slides and bumps", () => {
 
   it("ignores empty cells and cleared arrows without a mistake", () => {
     const state = newGame(parseBoard(["R.U"]));
-    expect(tap(state, { row: 0, col: 1 })).toEqual({ state, result: "ignored" });
+    expect(tap(state, { row: 0, col: 1 })).toEqual({ state, result: "ignored", bumpShake: false });
 
     const cleared = tap(state, { row: 0, col: 2 }).state;
     const again = tap(cleared, { row: 0, col: 2 });
@@ -94,5 +94,16 @@ describe("restart", () => {
     for (let i = 0; i < MAX_MISTAKES; i++) state = tap(state, { row: 0, col: 0 }).state;
     expect(state.status).toBe("lost");
     expect(tap(restart(state), { row: 0, col: 2 }).result).toBe("slid");
+  });
+});
+
+describe("bump-shake feedback", () => {
+  it("is set on a blocked tap and not on a slide", () => {
+    const blocked = tap(newGame(parseBoard(["R.U"])), { row: 0, col: 0 });
+    expect(blocked.result).toBe("bumped");
+    expect(blocked.bumpShake).toBe(true);
+
+    const slid = tap(newGame(parseBoard(["R."])), { row: 0, col: 0 });
+    expect(slid.bumpShake).toBe(false);
   });
 });

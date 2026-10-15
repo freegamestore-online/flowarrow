@@ -89,6 +89,17 @@ export function clearArrow(board: Board, pos: Position): Board {
   return { ...board, cells };
 }
 
+/** Return a new board with the cleared arrow at `pos` put back. Used by undo. */
+export function restoreArrow(board: Board, pos: Position): Board {
+  const tile = tileAt(board, pos);
+  if (!tile || !tile.cleared) throw new Error(`No cleared arrow at row ${pos.row}, col ${pos.col}`);
+
+  const cells = board.cells.map((line, row) =>
+    row === pos.row ? line.map((cell, col) => (col === pos.col ? { ...tile, cleared: false } : cell)) : line,
+  );
+  return { ...board, cells };
+}
+
 /** Number of arrows still on the board. */
 export function remainingArrows(board: Board): number {
   let count = 0;
