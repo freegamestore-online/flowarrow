@@ -91,7 +91,7 @@ export function findHint(state: GameState): Position | null {
  * highlight. If the hint is already spent, or no hint is available, the state comes back
  * unchanged with a null hint.
  */
-export function useHint(state: GameState): { state: GameState; hint: Position | null } {
+export function spendHint(state: GameState): { state: GameState; hint: Position | null } {
   if (state.hintUsed) return { state, hint: null };
 
   const hint = findHint(state);

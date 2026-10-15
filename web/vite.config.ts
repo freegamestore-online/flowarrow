@@ -43,7 +43,12 @@ export default defineConfig({
       manifest: {
         name: "Flowarrow",
         short_name: "Flowarrow",
-        description: "Flowarrow — free forever",
+        description: "Slide every arrow off the board. A free puzzle with 60 levels and a daily board.",
+        lang: "en",
+        categories: ["games", "puzzle"],
+        keywords: ["puzzle", "arrows", "logic", "daily", "free"],
+        // Store age rating, read from store/listing.md. Browsers ignore unknown members.
+        ageRating: "4+",
         start_url: "/",
         display: "standalone",
         background_color: "#0f0f0f",

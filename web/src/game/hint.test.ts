@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { canSlide, parseBoard, type Position } from "./board";
-import { MAX_MISTAKES, findHint, newGame, tap, useHint, type GameState } from "./game";
+import { MAX_MISTAKES, findHint, newGame, tap, spendHint, type GameState } from "./game";
 import { solve } from "./solver";
 
 const at = (row: number, col: number) => ({ row, col });
@@ -58,41 +58,41 @@ describe("findHint: the next free arrow", () => {
   });
 });
 
-describe("useHint: one hint per level", () => {
+describe("spendHint: one hint per level", () => {
   it("spends the hint and returns the position", () => {
     const state = newGame(parseBoard(["R.U", "..."]));
-    const { state: next, hint } = useHint(state);
+    const { state: next, hint } = spendHint(state);
     expect(hint).toEqual(at(0, 2));
     expect(next.hintUsed).toBe(true);
     expect(next.board).toBe(state.board);
   });
 
   it("gives no second hint on the same level", () => {
-    const first = useHint(newGame(parseBoard(["R.U", "..."])));
-    const second = useHint(first.state);
+    const first = spendHint(newGame(parseBoard(["R.U", "..."])));
+    const second = spendHint(first.state);
     expect(second.hint).toBeNull();
     expect(second.state).toBe(first.state);
   });
 
   it("does not spend the hint when none is available", () => {
     const state = newGame(parseBoard(["RL"]));
-    const { state: next, hint } = useHint(state);
+    const { state: next, hint } = spendHint(state);
     expect(hint).toBeNull();
     expect(next.hintUsed).toBe(false);
   });
 
   it("is restored by restart, and the moves before it are forgotten", () => {
-    const { state } = useHint(newGame(parseBoard(["R..", "..U"])));
+    const { state } = spendHint(newGame(parseBoard(["R..", "..U"])));
     expect(state.hintUsed).toBe(true);
     const fresh = newGame(state.initial);
     expect(fresh.hintUsed).toBe(false);
-    expect(useHint(fresh).hint).not.toBeNull();
+    expect(spendHint(fresh).hint).not.toBeNull();
   });
 
   it("does not change the mistake limit", () => {
     let state = newGame(parseBoard(["R.U", "..."]));
     for (let i = 0; i < MAX_MISTAKES - 1; i++) state = tap(state, at(0, 0)).state;
-    state = useHint(state).state;
+    state = spendHint(state).state;
     expect(state.mistakes).toBe(MAX_MISTAKES - 1);
     expect(state.status).toBe("playing");
   });
