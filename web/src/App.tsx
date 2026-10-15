@@ -1,9 +1,21 @@
-import { GameShell, GameTopbar, GameAuth } from "@freegamestore/games";
+import { GameShell, GameTopbar, GameAuth, GameThemeToggle } from "@freegamestore/games";
 
 export default function App() {
   return (
-    <GameShell topbar={<GameTopbar title="Flowarrow" score={0} />}>
-      <GameAuth />
+    <GameShell
+      topbar={
+        <GameTopbar
+          title="Flowarrow"
+          score={0}
+          actions={
+            <>
+              <GameThemeToggle />
+              <GameAuth />
+            </>
+          }
+        />
+      }
+    >
       <div className="flex flex-col items-center justify-center h-full gap-4">
         <h1
           className="text-3xl font-bold"

@@ -8,6 +8,7 @@
     "dev": "pnpm --filter @flowarrow/web dev",
     "build": "pnpm --filter @flowarrow/web build",
     "preview": "pnpm --filter @flowarrow/web preview",
+    "lint": "pnpm --filter @flowarrow/web lint",
     "typecheck": "pnpm --filter @flowarrow/web exec tsc -b",
     "test": "pnpm --filter @flowarrow/web test"
   }
