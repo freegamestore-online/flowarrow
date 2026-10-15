@@ -98,7 +98,7 @@ jobs:
             if curl -fsS http://127.0.0.1:4173/ >/dev/null; then break; fi
             sleep 1
           done
-          curl -fsS http://127.0.0.1:4173/ >/dev/null
+          curl -fsS http://127.0.0.1:4173/ >/dev/null || { echo "::error::preview server not serving"; cat /tmp/fgs-preview.log; exit 1; }
           node <<'NODE'
           const { spawn } = require("node:child_process");
           async function main() {
